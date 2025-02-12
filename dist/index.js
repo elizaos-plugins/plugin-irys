@@ -82,9 +82,10 @@ var IrysService = class extends Service {
     return [String(value)];
   }
   async orchestrateRequest(requestMessage, tags, timestamp = null) {
-    const serviceCategory = tags.find((tag) => tag.name === "Service-Category")?.values;
-    const protocol = tags.find((tag) => tag.name === "Protocol")?.values;
-    const minimumProviders = Number(tags.find((tag) => tag.name === "Minimum-Providers")?.values);
+    var _a, _b, _c, _d, _e, _f;
+    const serviceCategory = (_a = tags.find((tag) => tag.name === "Service-Category")) == null ? void 0 : _a.values;
+    const protocol = (_b = tags.find((tag) => tag.name === "Protocol")) == null ? void 0 : _b.values;
+    const minimumProviders = Number((_c = tags.find((tag) => tag.name === "Minimum-Providers")) == null ? void 0 : _c.values);
     const tagsToRetrieve = [
       { name: "Message-Type", values: [IrysMessageType.DATA_STORAGE] },
       { name: "Service-Category", values: this.converToValues(serviceCategory) },
@@ -110,7 +111,7 @@ var IrysService = class extends Service {
           modelClass: ModelClass.MEDIUM
         });
         console.log("RESPONSE FROM MODEL : ", responseFromModel);
-        if (!responseFromModel.success || responseFromModel.content?.toString().toLowerCase().includes("false") && !responseFromModel.content?.toString().toLowerCase().includes("true")) {
+        if (!responseFromModel.success || ((_d = responseFromModel.content) == null ? void 0 : _d.toString().toLowerCase().includes("false")) && !((_e = responseFromModel.content) == null ? void 0 : _e.toString().toLowerCase().includes("true"))) {
           dataArray.splice(i, 1);
           i--;
         }
@@ -125,7 +126,7 @@ var IrysService = class extends Service {
       { name: "Message-Type", values: [IrysMessageType.REQUEST_RESPONSE] },
       { name: "Service-Category", values: [serviceCategory] },
       { name: "Protocol", values: [protocol] },
-      { name: "Request-Id", values: [tags.find((tag) => tag.name === "Request-Id")?.values[0]] }
+      { name: "Request-Id", values: [(_f = tags.find((tag) => tag.name === "Request-Id")) == null ? void 0 : _f.values[0]] }
     ];
     if (dataArray.length === 0) {
       const response2 = await this.uploadDataOnIrys("No relevant data found from providers", responseTags, IrysMessageType.REQUEST_RESPONSE);
